@@ -7,6 +7,9 @@ class Fibonacci{
         int num=s.nextInt();
         int first=0,second=1;
         int sum=0;
+        ArrayList<String> al = new ArrayList<String>(); 
+        al.add(null); 
+        System.out.println(al.size());
         for(int i=0;i<=num-1;i++){
              System.out.print(" "+first+" ");
             sum=first+second;
