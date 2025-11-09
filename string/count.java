@@ -5,11 +5,13 @@ public class count {
 
    static int countVowels(String s){
         String vowels[]={"a","e","i","o","u"};
+        String x="aeiou";
         String compare=s.toLowerCase();
         int vowel=0;
         for(int i=0;i<s.length();i++){
             for(int j=0;j< vowels.length;j++){
                 if(compare.charAt(i) == vowels[j].charAt(0)){
+                 //    compare.charAt(i) == x.charAt(i)
                     vowel++;
                 }
 
