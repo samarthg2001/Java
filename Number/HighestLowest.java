@@ -4,7 +4,7 @@ public class HighestLowest {
 
     public static void main(String args[]){
 
-        int [] arr={1213,51,562,1,023,50,5,011111,3265,125,5545,15612};
+        int [] arr={1213,51,562,1,023,50,5,011111,01,3265,125,5545,15612};
         int highestValue=arr[0],lowestValue=arr[0];
         int n=arr.length;
         try{
@@ -12,11 +12,11 @@ public class HighestLowest {
             if(arr[i]>highestValue){
                 highestValue=arr[i];
             }
-            else if(arr[i]<lowestValue){
-                lowestValue=arr[i];
-            }
             else{
-                // continue;
+                if(arr[i]<lowestValue){
+                    lowestValue=arr[i];
+                }
+    
             }
 
         }

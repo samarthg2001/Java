@@ -2,9 +2,7 @@ import java.util.*;
 
 class BubbleSort {
     public static void main(String args[]) {
-        // Scanner s = new Scanner(System.in);
-        // int n = s.nextInt(); // (optional if you want user input)
-        int[] arr = {10, 20, 3, 4, 56, 9, 8};
+         int[] arr = {10, 20, 3, 4, 56, 9, 8};
         int temp;
         boolean swapped;
 
