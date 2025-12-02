@@ -25,7 +25,7 @@ public static void binery(int arr[],int target){
             high=mid-1;
         }
         else{
-            low=mid+1;
+            low=mid+1   ;
         }
         
     }
