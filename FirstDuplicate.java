@@ -24,10 +24,8 @@ System.out.println(input+" string first duplicate value is "+ res);
             for(int j=i+1;j<stringLenght;j++){
             if(s.charAt(i)==s.charAt(j)){
                 return s.charAt(i);
-             
             }
             }
-            
         }
         return '\0';
     }
