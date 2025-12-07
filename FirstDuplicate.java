@@ -19,7 +19,6 @@ System.out.println(input+" string first duplicate value is "+ res);
    static char FirstDuplicatevalue(String s){
         
         int stringLenght=s.length();
-        
         for(int i=0;i<stringLenght;i++){
             for(int j=i+1;j<stringLenght;j++){
             if(s.charAt(i)==s.charAt(j)){
