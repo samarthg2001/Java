@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SIP Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 900px;
+      background: #fff;
+      margin: auto;
+      padding: 30px;
+      border-radius: 12px;
+      display: flex;
+      gap: 40px;
+    }
+
+    .left {
+      flex: 1;
+    }
+
+    .right {
+      width: 300px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 25px;
+    }
+
+    .field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      float: right;
+      color: #00a676;
+      font-weight: bold;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .summary {
+      margin-top: 30px;
+    }
+
+    .summary div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .invest-btn {
+      background: #00b386;
+      border: none;
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    /* Donut chart */
+    .donut {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: conic-gradient(
+        #4f6df5 0deg,
+        #4f6df5 var(--percent),
+        #e9ecf5 var(--percent)
+      );
+      margin: auto;
+      position: relative;
+    }
+
+    .donut::after {
+      content: "";
+      width: 140px;
+      height: 140px;
+      background: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: 40px;
+      left: 40px;
+    }
+
+    .legend {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .legend span {
+      display: inline-block;
+      margin: 0 10px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="left">
+    <h2>SIP Calculator</h2>
+
+    <div class="field">
+      <label>Monthly investment <span class="value">₹ <span id="monthlyVal">5000</span></span></label>
+      <input type="range" min="1000" max="50000" step="500" value="5000" id="monthly">
+    </div>
+
+    <div class="field">
+      <label>Expected return (p.a) <span class="value"><span id="returnVal">8.6</span>%</span></label>
+      <input type="range" min="1" max="20" step="0.1" value="8.6" id="return">
+    </div>
+
+    <div class="field">
+      <label>Time period <span class="value"><span id="yearVal">30</span> Yr</span></label>
+      <input type="range" min="1" max="40" value="30" id="years">
+    </div>
+
+    <div class="field">
+      <label>Inflation (p.a) <span class="value"><span id="inflationVal">8.6</span>%</span></label>
+      <input type="range" min="1" max="15" step="0.1" value="8.6" id="inflation">
+    </div>
+
+    <div class="summary">
+      <div>
+        <span>Invested amount</span>
+        <span>₹ <span id="invested">18,00,000</span></span>
+      </div>
+      <div>
+        <span>Est. returns</span>
+        <span>₹ <span id="returns">61,41,405</span></span>
+      </div>
+      <div>
+        <strong>Total value</strong>
+        <strong>₹ <span id="total">79,41,405</span></strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="donut" id="donut" style="--percent: 270deg;"></div>
+
+    <div class="legend">
+      <span><i class="dot" style="background:#e9ecf5"></i>Invested</span>
+      <span><i class="dot" style="background:#4f6df5"></i>Returns</span>
+    </div>
+
+    <button class="invest-btn">INVEST NOW</button>
+  </div>
+
+</div>
+
+<script>
+  const monthly = document.getElementById("monthly");
+  const rate = document.getElementById("return");
+  const years = document.getElementById("years");
+
+  function format(num) {
+    return num.toLocaleString("en-IN");
+  }
+
+  function calculate() {
+    const m = +monthly.value;
+    const r = (+rate.value) / 100 / 12;
+    const n = +years.value * 12;
+
+    const invested = m * n;
+    const futureValue =
+      m * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+
+    const returns = futureValue - invested;
+
+    document.getElementById("monthlyVal").innerText = m;
+    document.getElementById("returnVal").innerText = rate.value;
+    document.getElementById("yearVal").innerText = years.value;
+
+    document.getElementById("invested").innerText = format(Math.round(invested));
+    document.getElementById("returns").innerText = format(Math.round(returns));
+    document.getElementById("total").innerText = format(Math.round(futureValue));
+
+    const percent = (returns / futureValue) * 360;
+    document.getElementById("donut").style.setProperty("--percent", percent + "deg");
+  }
+
+  document.querySelectorAll("input").forEach(input =>
+    input.addEventListener("input", calculate)
+  );
+
+  calculate();
+</script>
+
+</body>
+</html>

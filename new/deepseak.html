@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIP Investment Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .calculator-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .calculator-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .calculator-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .calculator-title i {
+            font-size: 28px;
+        }
+        
+        .investment-type {
+            display: flex;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 5px;
+        }
+        
+        .type-btn {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .type-btn.active {
+            background: white;
+            color: #1e3c72;
+        }
+        
+        .calculator-body {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px;
+            gap: 30px;
+        }
+        
+        .input-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        .input-value {
+            color: #1e3c72;
+            font-weight: 700;
+        }
+        
+        .slider-container {
+            position: relative;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #1e3c72;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            border: 3px solid white;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #1e3c72;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            border: 3px solid white;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .result-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .result-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+        
+        .result-highlight {
+            background: #1e3c72;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .highlight-label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .highlight-value {
+            font-size: 36px;
+            font-weight: 800;
+        }
+        
+        .invest-btn {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 30px;
+            width: 100%;
+            box-shadow: 0 10px 20px rgba(255, 126, 95, 0.3);
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .invest-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(255, 126, 95, 0.4);
+        }
+        
+        .invest-btn:active {
+            transform: translateY(-2px);
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .calculator-body {
+                flex-direction: column;
+            }
+            
+            .calculator-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .result-value {
+                font-size: 18px;
+            }
+            
+            .highlight-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-card">
+            <div class="calculator-header">
+                <div class="calculator-title">
+                    <i class="fas fa-chart-line"></i>
+                    SIP Investment Calculator
+                </div>
+                <div class="investment-type">
+                    <button class="type-btn active" id="sipBtn">SIP</button>
+                    <button class="type-btn" id="lumpsumBtn">Lumpsum</button>
+                </div>
+            </div>
+            
+            <div class="calculator-body">
+                <div class="input-section">
+                    <div class="input-group">
+                        <div class="input-label">
+                            <span>Monthly investment</span>
+                            <span class="input-value" id="monthlyInvestmentValue">₹ 5,000</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" min="1000" max="50000" step="500" value="5000" class="slider" id="monthlyInvestment">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <div class="input-label">
+                            <span>Expected return rate (p.a)</span>
+                            <span class="input-value" id="returnRateValue">8.6%</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="20" step="0.1" value="8.6" class="slider" id="returnRate">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <div class="input-label">
+                            <span>Time period</span>
+                            <span class="input-value" id="timePeriodValue">30 Years</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="40" step="1" value="30" class="slider" id="timePeriod">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <div class="input-label">
+                            <span>Inflation (p.a)</span>
+                            <span class="input-value" id="inflationValue">8.6%</span>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" min="1" max="15" step="0.1" value="8.6" class="slider" id="inflation">
+                        </div>
+                    </div>
+                    
+                    <div class="footer-note">
+                        <p><i class="fas fa-info-circle"></i> Adjust sliders to change investment parameters</p>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <div class="result-card">
+                        <div class="result-row">
+                            <div class="result-label">Invested amount</div>
+                            <div class="result-value" id="investedAmount">₹18,00,000</div>
+                        </div>
+                        
+                        <div class="result-row">
+                            <div class="result-label">Est. returns</div>
+                            <div class="result-value" id="estReturns">₹61,41,405</div>
+                        </div>
+                        
+                        <div class="result-row">
+                            <div class="result-label">Total value</div>
+                            <div class="result-value" id="totalValue">₹79,41,405</div>
+                        </div>
+                        
+                        <div class="result-highlight">
+                            <div class="highlight-label">Total returns on investment</div>
+                            <div class="highlight-value" id="totalReturnPercent">341%</div>
+                        </div>
+                    </div>
+                    
+                    <button class="invest-btn" id="investNowBtn">
+                        <i class="fas fa-bolt"></i> INVEST NOW
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const monthlyInvestmentSlider = document.getElementById('monthlyInvestment');
+        const returnRateSlider = document.getElementById('returnRate');
+        const timePeriodSlider = document.getElementById('timePeriod');
+        const inflationSlider = document.getElementById('inflation');
+        
+        const monthlyInvestmentValue = document.getElementById('monthlyInvestmentValue');
+        const returnRateValue = document.getElementById('returnRateValue');
+        const timePeriodValue = document.getElementById('timePeriodValue');
+        const inflationValue = document.getElementById('inflationValue');
+        
+        const investedAmountElement = document.getElementById('investedAmount');
+        const estReturnsElement = document.getElementById('estReturns');
+        const totalValueElement = document.getElementById('totalValue');
+        const totalReturnPercentElement = document.getElementById('totalReturnPercent');
+        
+        const sipBtn = document.getElementById('sipBtn');
+        const lumpsumBtn = document.getElementById('lumpsumBtn');
+        const investNowBtn = document.getElementById('investNowBtn');
+        
+        // Format currency in Indian numbering system
+        function formatCurrency(amount) {
+            return '₹' + amount.toLocaleString('en-IN');
+        }
+        
+        // Calculate SIP returns
+        function calculateSIPReturns(monthlyInvestment, returnRate, years) {
+            // Convert annual rate to monthly rate
+            const monthlyRate = returnRate / 12 / 100;
+            const months = years * 12;
+            
+            // Future Value of SIP formula: FV = P * [ ( (1 + r)^n - 1 ) / r ] * (1 + r)
+            // Where P = monthly investment, r = monthly rate, n = number of months
+            let futureValue;
+            
+            if (monthlyRate === 0) {
+                futureValue = monthlyInvestment * months;
+            } else {
+                futureValue = monthlyInvestment * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
+            }
+            
+            // Total invested amount
+            const investedAmount = monthlyInvestment * months;
+            
+            // Estimated returns
+            const estReturns = futureValue - investedAmount;
+            
+            return {
+                investedAmount,
+                estReturns,
+                futureValue
+            };
+        }
+        
+        // Calculate lumpsum returns
+        function calculateLumpsumReturns(investmentAmount, returnRate, years) {
+            // Future Value of lumpsum: FV = P * (1 + r)^n
+            // Where P = investment amount, r = annual rate, n = number of years
+            const futureValue = investmentAmount * Math.pow(1 + returnRate / 100, years);
+            const estReturns = futureValue - investmentAmount;
+            
+            return {
+                investedAmount: investmentAmount,
+                estReturns,
+                futureValue
+            };
+        }
+        
+        // Update the calculator based on current values
+        function updateCalculator() {
+            const monthlyInvestment = parseFloat(monthlyInvestmentSlider.value);
+            const returnRate = parseFloat(returnRateSlider.value);
+            const years = parseFloat(timePeriodSlider.value);
+            
+            // Update display values
+            monthlyInvestmentValue.textContent = formatCurrency(monthlyInvestment);
+            returnRateValue.textContent = returnRate.toFixed(1) + '%';
+            timePeriodValue.textContent = years + (years === 1 ? ' Year' : ' Years');
+            inflationValue.textContent = inflationSlider.value + '%';
+            
+            let results;
+            
+            // Check which mode is active
+            if (sipBtn.classList.contains('active')) {
+                // SIP calculation
+                results = calculateSIPReturns(monthlyInvestment, returnRate, years);
+            } else {
+                // Lumpsum calculation (using monthly investment as the lumpsum amount)
+                results = calculateLumpsumReturns(monthlyInvestment * 12, returnRate, years);
+            }
+            
+            // Update results
+            investedAmountElement.textContent = formatCurrency(results.investedAmount);
+            estReturnsElement.textContent = formatCurrency(results.estReturns);
+            totalValueElement.textContent = formatCurrency(results.futureValue);
+            
+            // Calculate total return percentage
+            const totalReturnPercent = (results.estReturns / results.investedAmount) * 100;
+            totalReturnPercentElement.textContent = totalReturnPercent.toFixed(0) + '%';
+        }
+        
+        // Event listeners for sliders
+        monthlyInvestmentSlider.addEventListener('input', updateCalculator);
+        returnRateSlider.addEventListener('input', updateCalculator);
+        timePeriodSlider.addEventListener('input', updateCalculator);
+        inflationSlider.addEventListener('input', updateCalculator);
+        
+        // Event listeners for investment type buttons
+        sipBtn.addEventListener('click', function() {
+            sipBtn.classList.add('active');
+            lumpsumBtn.classList.remove('active');
+            monthlyInvestmentValue.textContent = formatCurrency(parseFloat(monthlyInvestmentSlider.value));
+            updateCalculator();
+        });
+        
+        lumpsumBtn.addEventListener('click', function() {
+            lumpsumBtn.classList.add('active');
+            sipBtn.classList.remove('active');
+            // Convert monthly investment to yearly for lumpsum display
+            const yearlyInvestment = parseFloat(monthlyInvestmentSlider.value) * 12;
+            monthlyInvestmentValue.textContent = formatCurrency(yearlyInvestment);
+            updateCalculator();
+        });
+        
+        // Event listener for invest button
+        investNowBtn.addEventListener('click', function() {
+            const investmentType = sipBtn.classList.contains('active') ? 'SIP' : 'Lumpsum';
+            const amount = sipBtn.classList.contains('active') 
+                ? `₹${monthlyInvestmentSlider.value}/month` 
+                : `₹${monthlyInvestmentSlider.value * 12}`;
+            
+            alert(`Thank you for your interest!\n\nInvestment Type: ${investmentType}\nAmount: ${amount}\nDuration: ${timePeriodSlider.value} years\n\nOur financial advisor will contact you shortly.`);
+        });
+        
+        // Initialize the calculator
+        updateCalculator();
+        
+        // Add some animation to the invest button
+        investNowBtn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        investNowBtn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    </script>
+</body>
+</html>

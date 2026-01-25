@@ -1,0 +1,64 @@
+{
+  "students": [
+    {
+      "id": "1",
+      "name": "Amit Sharma",
+      "location": "Bangalore",
+      "phone": "9876543210",
+      "course": [
+        "Java",
+        "Python",
+        "Rest Assured"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Priya Verma",
+      "location": "Pune",
+      "phone": "9123456780",
+      "course": [
+        "Java",
+        "Rest Assured"
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Rahul Mehta",
+      "location": "Hyderabad",
+      "phone": "9988776655",
+      "course": [
+        "Python"
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Sneha Patil",
+      "location": "Chennai",
+      "phone": "9090909090",
+      "course": [
+        "Java",
+        "Python"
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Karan Singh",
+      "location": "Delhi",
+      "phone": "9012345678",
+      "course": [
+        "Rest Assured",
+        "Java"
+      ]
+    },
+    {
+      "id": "228f",
+      "phone": "1234567890",
+      "name": "scott",
+      "course": [
+        "c",
+        "c++"
+      ],
+      "location": "France"
+    }
+  ]
+}
