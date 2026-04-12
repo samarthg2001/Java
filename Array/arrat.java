@@ -24,7 +24,9 @@ static void reverse(int arr[]){
     }
 
     for(int i:arr)
-    System.out.println(i);
+    System.out.print(i+ " " );
+
+    System.out.println();
 }
 
 
@@ -43,6 +45,7 @@ static void reverse(int arr[]){
         reverse(arr);
         reverse(arr1);
         reverse(arr1);
+        reverse(arr);
 
  
     }
